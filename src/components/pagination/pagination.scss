@@ -1,0 +1,22 @@
+.pagination {
+  &__limit-select {
+    padding: 0.5rem;
+    border: 1px solid #ffffffde;
+    color: #ffffffde;
+    background-color: #242424;
+    border-radius: 0.5rem;
+  }
+  &__container {
+    position: relative;
+  }
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  &__list-item {
+    display: flex;
+    align-items: flex-end;
+    align-self: stretch;
+  }
+}
