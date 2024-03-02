@@ -38,7 +38,7 @@ export const Pagination = new StateBaseUI({
                 data-role='navigation'
                 id='page-next'
                 data-page=${current + 1}
-                ${!!isFinalPage || isLoading ? "disabled" : ""}
+                ${isFinalPage || isLoading ? "disabled" : ""}
               >
                 <span>Вперед</span>
               </button>
@@ -57,12 +57,15 @@ export const Pagination = new StateBaseUI({
                 } value='all'>Показать все</option>
               </select>
             </li>
-            <li class='pagination__list-item'>
+            ${
+              limit !== "all"
+                ? `<li class='pagination__list-item'>
               <span>Элементов на странице - ${limit}</span>
               <span>Страница#${current} ${
-      !isFinalPage ? "" : ` - последняя в списке`
-    }</span>
-              
+                    !isFinalPage ? "" : ` - последняя в списке`
+                  }</span>`
+                : ""
+            }     
             </li>
           </ul>
          

@@ -1,6 +1,7 @@
 import { getLeads, getLeadsPage, getUsers } from "..";
 import StateBaseUI from "../../core/classes/state-based-ui-instanse";
 import { LeadsAdapter } from "../../core/helpers/leads-adapter";
+import { sortingList } from "../../core/helpers/sorting-list";
 import state from "../../state/state";
 
 /**
@@ -42,8 +43,9 @@ export async function loadPage({ limit, page }) {
     }
     const users = state.get("users");
     const adaptedList = LeadsAdapter(leads, users);
-    state.set("total", [...adaptedList]);
-    state.set("pageList", [...adaptedList]);
+    const sorting = state.get("sorting");
+    const withSort = sortingList(adaptedList, sorting);
+    state.set("pageList", withSort);
     state.set("isFinalPage", false);
     state.set("isLoading", false);
   } catch (error) {
@@ -62,17 +64,18 @@ export async function loadAllPages(page, attempts = 0) {
     const {
       _embedded: { leads },
     } = await getLeadsPage({ limit: 5, page });
-    if (leads === -1) {
+    if (typeof leads === "number") {
       state.set("isLoading", false);
       console.warn("Received 204 status, exiting recursion.");
       return;
-    } else {
-      const adaptedList = LeadsAdapter(leads, state.get("users"));
-      const list = state.get("pageList");
-      state.set("pageList", [...list, ...adaptedList]);
-      await new Promise((resolve) => setTimeout(resolve, RATE_LIMIT));
-      return loadAllPages(page + 1, attempts);
     }
+    const adaptedList = LeadsAdapter(leads, state.get("users"));
+    const list = state.get("pageList");
+    const sorting = state.get("sorting");
+    const withSort = sortingList([...list, ...adaptedList], sorting);
+    state.set("pageList", withSort);
+    await new Promise((resolve) => setTimeout(resolve, RATE_LIMIT));
+    return loadAllPages(page + 1, attempts);
   } catch (error) {
     console.error("An error occurred:", error.message);
     if (attempts < 3) {

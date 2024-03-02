@@ -1,8 +1,22 @@
 /**
+ * @typedef {{
+ *   created: number;
+ *  id: number;
+ *  name: string;
+ *  price: number;
+ *  responsibleName: string;
+ *  customFields: {
+ *     name: string;
+ *    value: string;
+ * }[];
+ *}[]} AdaptedList
+ */
+
+/**
  *
  * @param {{name: string, price: number, id: string, created_at:number, responsible_user_id: number, custom_fields_values: object[]}[]} leadsList
  * @param {{name: string, id: number}[]} usersList
- * @returns {{created: number, id: number, name: string, price: number, responsibleName: string, customFields: Array<{name: string, value: string}>}[]}
+ * @returns {AdaptedList}
  */
 export function LeadsAdapter(leadsList, usersList) {
   const adapted = leadsList.map((lead) => {

@@ -26,7 +26,7 @@ export const getLeads = async () => {
  * @param {object} [query]
  * @param {number} [query.limit=250]
  * @param {number} [query.page=1]
- * @returns {Promise<{_embedded: {leads: {name: string, price: number, id: number, created_at:number, responsible_user_id}[] | number}} | void>}
+ * @returns {Promise<{_embedded: {leads: {name: string, price: number, id: number, created_at:number, responsible_user_id: number}[] | number}} | void>}
  */
 export const getLeadsPage = async ({ page, limit }) => {
   try {
