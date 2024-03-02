@@ -86,6 +86,11 @@ export function addEventListeners(list, pagination) {
         },
       } = event;
       const newSorting = { direction, type, key };
+      if (direction === "none") {
+        state.set("sorting", { type, key, direction: null });
+        addEventListeners(list, pagination);
+        return;
+      }
       state.set("sorting", newSorting);
       addEventListeners(list, pagination);
     };

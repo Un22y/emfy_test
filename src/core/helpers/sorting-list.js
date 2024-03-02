@@ -20,8 +20,9 @@
  *
  */
 export function sortingList(list, { key, type, direction }) {
-  if (!key || !type || !direction) {
-    return list;
+  //
+  if (direction == null) {
+    return sortNumbers(list, "created", "asc");
   }
   if (type === "string") {
     return sortStrings(list, key, direction);

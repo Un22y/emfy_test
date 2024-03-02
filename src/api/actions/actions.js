@@ -43,6 +43,7 @@ export async function loadPage({ limit, page }) {
     }
     const users = state.get("users");
     const adaptedList = LeadsAdapter(leads, users);
+
     const sorting = state.get("sorting");
     const withSort = sortingList(adaptedList, sorting);
     state.set("pageList", withSort);

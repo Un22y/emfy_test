@@ -52,7 +52,7 @@ state.addObserver("current", async () => {
 state.addObserver("sorting", () => {
   const result = sortingList(state.get("pageList"), state.get("sorting"));
   LeadList.data.sorting = state.get("sorting");
-  state.set("pageList", result);
+  state.set("pageList", [...result]);
 });
 
 export default state;
