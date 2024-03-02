@@ -27,6 +27,7 @@ export function renderPage(list, pagination) {
     if (limit === "all") {
       state.set("pageList", []);
       await loadAllPages(1);
+      state.set("limit", limit);
       renderPage(list, pagination);
       return;
     }
@@ -39,43 +40,30 @@ export function renderPage(list, pagination) {
     renderPage(list, pagination);
   };
 
-  document.getElementById("page-next").onclick = async function (e) {
-    state.set("selectedLead", null);
-    const {
-      currentTarget: {
-        dataset: { page },
-      },
-    } = e;
-    console.log(page);
-    const limit = state.get("limit");
-    const check = await loadPage({ limit, page: Number(page) });
-    console.log(check);
-    if (!!check) {
-      renderPage(list, pagination);
-      return;
-    }
-    state.set("current", Number(page));
-    renderPage(list, pagination);
-  };
+  const navPages = document.querySelectorAll('[data-role="navigation"]');
+  if (navPages.length) {
+    navPages.forEach(
+      (navButton) =>
+        (navButton.onclick = async function (e) {
+          state.set("selectedLead", null);
+          const {
+            currentTarget: {
+              dataset: { page },
+            },
+          } = e;
 
-  document.getElementById("page-prev").onclick = async function (e) {
-    state.set("selectedLead", null);
-    const {
-      currentTarget: {
-        dataset: { page },
-      },
-    } = e;
-    console.log(page);
-    const limit = state.get("limit");
-    const check = await loadPage({ limit, page: Number(page) });
-    console.log(check);
-    if (!!check) {
-      renderPage(list, pagination);
-      return;
-    }
-    state.set("current", Number(page));
-    renderPage(list, pagination);
-  };
+          const limit = state.get("limit");
+          const check = await loadPage({ limit, page: Number(page) });
+
+          if (!!check) {
+            renderPage(list, pagination);
+            return;
+          }
+          state.set("current", Number(page));
+          renderPage(list, pagination);
+        })
+    );
+  }
 
   const fullInfoButtons = document.querySelectorAll("[data-role='full-info']");
 

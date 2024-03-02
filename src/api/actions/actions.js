@@ -30,6 +30,7 @@ export async function loadLeads() {
  */
 export async function loadPage({ limit, page }) {
   try {
+    state.set("isLoading", true);
     const {
       _embedded: { leads },
     } = await getLeadsPage({ limit, page });
@@ -44,9 +45,11 @@ export async function loadPage({ limit, page }) {
     state.set("total", [...adaptedList]);
     state.set("pageList", [...adaptedList]);
     state.set("isFinalPage", false);
+    state.set("isLoading", false);
   } catch (error) {
-    console.log("empty list or smthng else");
+    console.error("empty list or smthng else");
     state.set("isFinalPage", true);
+    state.set("isLoading", false);
     return -1;
   }
 }
@@ -61,10 +64,9 @@ export async function loadAllPages(page, attempts = 0) {
     } = await getLeadsPage({ limit: 5, page });
     if (leads === -1) {
       state.set("isLoading", false);
-      console.log("Received 204 status, exiting recursion.");
+      console.warn("Received 204 status, exiting recursion.");
       return;
     } else {
-      console.log("Content:", leads);
       const adaptedList = LeadsAdapter(leads, state.get("users"));
       const list = state.get("pageList");
       state.set("pageList", [...list, ...adaptedList]);
@@ -74,7 +76,7 @@ export async function loadAllPages(page, attempts = 0) {
   } catch (error) {
     console.error("An error occurred:", error.message);
     if (attempts < 3) {
-      console.log(`Retrying request (attempt ${attempts + 1})...`);
+      console.warn(`Retrying request (attempt ${attempts + 1})...`);
       await new Promise((resolve) => setTimeout(resolve, RATE_LIMIT));
       return loadAllPages(page, attempts + 1);
     } else {

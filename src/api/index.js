@@ -50,6 +50,10 @@ export const getLeadsPage = async ({ page, limit }) => {
  * @returns {Promise<{_embedded: {users: {name: string, id: number}[]}}>}
  */
 export const getUsers = async () => {
-  const { data } = await $server.get("api/v4/users");
-  return data;
+  try {
+    const { data } = await $server.get("api/v4/users");
+    return data;
+  } catch (error) {
+    console.error(error.message);
+  }
 };

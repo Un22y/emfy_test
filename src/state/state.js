@@ -18,7 +18,7 @@ const state = new StateModule(initialState);
 
 state.addObserver("pageList", () => {
   const pageList = state.get("pageList");
-  console.log(pageList);
+
   LeadList.data.list = [...pageList];
 });
 state.addObserver("selectedLead", () => {
@@ -31,13 +31,14 @@ state.addObserver("isFinalPage", () => {
 
 state.addObserver("isLoading", () => {
   if (LeadList.data.isLoading !== state.get("isLoading")) {
-    console.log("change!");
     LeadList.data.isLoading = state.get("isLoading");
+  }
+  if (Pagination.data.pagination.isLoading !== state.get("isLoading")) {
+    Pagination.data.pagination.isLoading = state.get("isLoading");
   }
 });
 
 state.addObserver("limit", async () => {
-  console.log("limit changes");
   Pagination.data.pagination.limit = state.get("limit");
 });
 state.addObserver("current", async () => {

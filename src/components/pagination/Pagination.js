@@ -8,22 +8,26 @@ export const Pagination = new StateBaseUI({
       limit: 5,
       total: 0,
       isFinalPage: false,
+      isLoading: false,
     },
   },
   selector: "#pagination-root",
   template: function (props) {
-    console.log("render");
     const {
-      pagination: { limit, current, isFinalPage },
+      pagination: { limit, current, isFinalPage, isLoading },
     } = props;
-    console.log(isFinalPage);
+
     const template = `
         <div class='pagination__container'>
           <ul class='pagination__list'>
-            <li class='pagination__list-item'>
+            ${
+              limit === "all"
+                ? ""
+                : `<li class='pagination__list-item'>
               <button
+                data-role='navigation'
                 id='page-prev'
-                ${current === 1 ? "disabled" : ""}
+                ${current === 1 || isLoading ? "disabled" : ""}
                 data-page=${current - 1}
               >
                 <span>Назад</span>
@@ -31,16 +35,20 @@ export const Pagination = new StateBaseUI({
                 </li>
             <li class='pagination__list-item'>
               <button
+                data-role='navigation'
                 id='page-next'
                 data-page=${current + 1}
-                ${!!isFinalPage ? "disabled" : ""}
+                ${!!isFinalPage || isLoading ? "disabled" : ""}
               >
                 <span>Вперед</span>
               </button>
-            </li>
+            </li>`
+            }
             <li style='display: flex; flex-direction: column; justify-content: center;'>
               <span>Количество строк:</span>
-              <select class='pagination__limit-select' value=${limit} id='pageLimit'>
+              <select  ${
+                isLoading ? "disabled" : ""
+              } class='pagination__limit-select' value=${limit} id='pageLimit'>
                 <option ${limit === 2 ? "selected" : ""} value='2'>2</option>
                 <option ${limit === 5 ? "selected" : ""} value='5'>5</option>
                 <option ${limit === 10 ? "selected" : ""} value='10'>10</option>
@@ -48,6 +56,13 @@ export const Pagination = new StateBaseUI({
                   limit === "all" ? "selected" : ""
                 } value='all'>Показать все</option>
               </select>
+            </li>
+            <li class='pagination__list-item'>
+              <span>Элементов на странице - ${limit}</span>
+              <span>Страница#${current} ${
+      !isFinalPage ? "" : ` - последняя в списке`
+    }</span>
+              
             </li>
           </ul>
          
