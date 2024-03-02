@@ -58,8 +58,11 @@
 
   &__cell {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
+    &_cell-header {
+      align-items: flex-start;
+    }
     &_sortable {
       flex-direction: column;
       gap: 0.5rem;

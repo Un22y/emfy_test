@@ -43,7 +43,7 @@ export const LeadList = new StateBaseUI({
       <h1 class="lead-list__title">Список сделок</h1>
       <div class='lead-list__container'>
         <div class='lead-list__header'>
-          <div class='lead-list__cell lead-list__cell_sortable' >
+          <div class='lead-list__cell lead-list__cell_cell-header lead-list__cell_sortable' >
             <span>Название</span>
             <select class='lead-list__sort-select' ${
               isLoading ? "disabled" : ""
@@ -59,7 +59,7 @@ export const LeadList = new StateBaseUI({
                 } value='desc'>По убыванию</option>
               </select>
           </div>
-          <div class='lead-list__cell lead-list__cell_sortable'  >
+          <div class='lead-list__cell lead-list__cell_cell-header lead-list__cell_sortable'  >
             <span>Бюджет</span>
             <select class='lead-list__sort-select' ${
               isLoading ? "disabled" : ""
@@ -75,9 +75,9 @@ export const LeadList = new StateBaseUI({
                 } value='desc'>По убыванию</option>
               </select>
           </div>
-          <div class='lead-list__cell' ><span>Дата создания</span></div>
-          <div class='lead-list__cell' ><span>Ответственный</span></div>
-          <div class='lead-list__cell' ><span>Дополнительно</span></div>
+          <div class='lead-list__cell lead-list__cell_cell-header' ><span>Дата создания</span></div>
+          <div class='lead-list__cell lead-list__cell_cell-header' ><span>Ответственный</span></div>
+          <div class='lead-list__cell lead-list__cell_cell-header' ><span>Дополнительно</span></div>
         </div>
         <ul class='lead-list__list'>
           ${list
